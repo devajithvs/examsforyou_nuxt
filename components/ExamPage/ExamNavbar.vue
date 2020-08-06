@@ -35,7 +35,7 @@ export default {
     data () {
         return{
             sidemenu: false,
-            timerCount: '00:00:00',
+            timer: 10,
         }
     },
     beforeMount(){
@@ -45,7 +45,17 @@ export default {
         exam_name() {
             return this.$store.state.examPage.exam_details.name + " " + this.$store.state.examPage.exam_details.year
         },
-    },        
+        timerCount: function(distance) {
+            
+            let hours = ('0' + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
+            let minutes = ('0' + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+            let seconds = ('0' + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+            return hours+":"+minutes+";"+seconds;
+        }
+    },
+    method: {
+
+    },
     watch: {
         timerCount: {
             handler() {
@@ -62,7 +72,6 @@ export default {
                         localStorage.removeItem("expire_date");
                         localStorage.removeItem("userAttemptsData");
                         localStorage.removeItem("sessionData");
-                        this.$store.state.examPage.sessionData.expire_date = null;
                         this.$store.commit('examPage/updateTime')
                     }
                 }, 1000);
