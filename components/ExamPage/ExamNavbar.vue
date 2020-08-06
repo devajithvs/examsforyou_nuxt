@@ -15,7 +15,7 @@
           <div class="flex align-center">
             <span class="gray-2 mr-1 display-lg-and-up">Time Left:</span>
             <img src="@/assets/svgs/timer.svg" class="icon" alt="">
-            <span class="gray-2 mr-5" id="time-left">{{timerCount}}</span>
+            <span class="gray-2 mr-5" id="time-left">{{("0" + Math.floor(timerCount / 3600)).slice(-2)}}:{{("0" + Math.floor(timerCount / 60)).slice(-2)}}:{{("0" + Math.floor(timerCount % 60)).slice(-2)}}</span>
             <button class="display-lg-and-up navbar-button button success">
                 <span class="font-bold font-18">Submit</span>
             </button>
@@ -35,7 +35,7 @@ export default {
     data () {
         return{
             sidemenu: false,
-            timer: 10,
+            timerCount: Math.floor((this.$store.state.examPage.sessionData.expire_date - new Date().getTime())/1000)
         }
     },
     beforeMount(){
@@ -45,39 +45,18 @@ export default {
         exam_name() {
             return this.$store.state.examPage.exam_details.name + " " + this.$store.state.examPage.exam_details.year
         },
-        timerCount: function(distance) {
-            
-            let hours = ('0' + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
-            let minutes = ('0' + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
-            let seconds = ('0' + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
-            return hours+":"+minutes+";"+seconds;
-        }
-    },
-    method: {
-
     },
     watch: {
         timerCount: {
-            handler() {
-                setTimeout(() => {
-                    // TODO IMPROVE
-                    let now = new Date().getTime();
-                    let distance =this.$store.state.examPage.sessionData.expire_date - now;
-                    let hours = ('0' + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
-                    let minutes = ('0' + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
-                    let seconds = ('0' + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
-                    this.timerCount = hours+ ":" + minutes + ":" + seconds;
-                    if (distance <= 0) {
-                        alert("Time's up! Restart?");
-                        localStorage.removeItem("expire_date");
-                        localStorage.removeItem("userAttemptsData");
-                        localStorage.removeItem("sessionData");
-                        this.$store.commit('examPage/updateTime')
-                    }
-                }, 1000);
+            handler(value) {
+                if (value > 0) {
+                    setTimeout(() => {
+                        this.timerCount = Math.floor((this.$store.state.examPage.sessionData.expire_date - new Date().getTime())/1000)
+                    }, 1000);
+                }
             },
             immediate: true // This ensures the watcher is triggered upon creation
         }
-    },
+    }
 }
 </script>

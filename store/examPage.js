@@ -36,21 +36,11 @@ export const mutations = {
     updateTime(state) {
         // state.sessionData.expire_date = null
         let duration = state.exam_details.duration;
-        duration = 10;
-        if(state.sessionData.expire_date===null) {
-            let endTime = new Date();
-            endTime.setSeconds(endTime.getSeconds() + duration);
-            state.sessionData.expire_date = endTime.getTime();
-            localStorage.setItem("sessionData", JSON.stringify(state.sessionData));
-        }
         let currentTime = new Date();
-        if (state.sessionData.expire_date < currentTime.getTime()){
-            state.sessionData.expire_date=null
-            alert("Time's up! Restart?");
-            localStorage.removeItem("expire_date");
-            localStorage.removeItem("userAttemptsData");
-            localStorage.removeItem("sessionData");
-            this.commit('updateTime');
+        if(state.sessionData.expire_date===null)  {
+            currentTime.setSeconds(currentTime.getSeconds() + duration);
+            state.sessionData.expire_date = currentTime.getTime();
+            localStorage.setItem("sessionData", JSON.stringify(state.sessionData));
         }
     },
     changeStats(state) {
