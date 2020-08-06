@@ -1,0 +1,3 @@
+[submodule "content/allExams/test2"]
+	path = content/allExams/test2
+	url = https://github.com/devajithvs/temp.git
