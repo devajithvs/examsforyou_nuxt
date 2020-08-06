@@ -1,3 +1,3 @@
-[submodule "content/allExams/test2"]
-	path = content/allExams/test2
+[submodule "content/allExams/test"]
+	path = content/allExams/test
 	url = https://github.com/devajithvs/temp.git
