@@ -1,0 +1,3 @@
+[submodule "assets/json_files"]
+	path = assets/json_files
+	url = https://gitlab.com/devajithvs/json_data.git

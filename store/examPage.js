@@ -129,5 +129,4 @@ export const mutations = {
         newRow[state.sessionData.question_no[state.sessionData.current_section]].answer = optionId
         Vue.set(state.userAttemptsData, state.sessionData.current_section, newRow);
     }
-
 }

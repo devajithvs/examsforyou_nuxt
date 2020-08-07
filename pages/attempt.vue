@@ -1,5 +1,5 @@
 <template>
-  <client-only v-if="examData">
+  <client-only v-if="loaded">
     <main>
       <header>
         <Navbar/>
@@ -23,6 +23,22 @@ export default {
     return {
       examData: null
     }
+  },
+  loading: {
+    continuous: true,
+  },
+  computed: {
+    loaded() {
+      return this.$store.state.examPage.exam_details.name;
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      if (this.loaded) {
+        this.$nuxt.$loading.finish()
+      }
+    });
   },
   async fetch() {
       const examData = await fetch(
